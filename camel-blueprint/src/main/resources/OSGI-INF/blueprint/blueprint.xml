@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:camel="http://camel.apache.org/schema/blueprint"
+	xsi:schemaLocation="
+       http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+	<!-- Bean Registry -->
+	<bean id="helloBean" class="com.redhat.samples.fuse.camel.blueprint.beans.HelloBean">
+		<property name="say" value="Hi from Camel" />
+	</bean>
+	<bean id="stockBean" class="com.redhat.samples.fuse.camel.blueprint.beans.StockBean" />
+	<!-- AMQ Bean -->
+	<bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+      <property name="brokerURL" value="vm://localhost?broker.persistent=false"/>
+      <property name="userName" value=""/>
+      <property name="password" value=""/>
+	</bean>
+	
+	<!-- Camel CXF -->
+	<!-- 
+	<cxf:rsServer id="rsServer" 
+		address="http://localhost:9090/route"
+		serviceClass="com.redhat.samples.fuse.camel.blueprint.rs.TradeOrderRS"/>
+	-->
+		
+	<!-- Route Builder -->
+	<!-- bean id="camelBluePrintRouteBuilder" 
+		class="com.redhat.samples.fuse.camel.blueprint.rs.router.CamelBluePrintRouteBuilder"/-->
+
+	<!-- Camel Context -->
+	<camelContext trace="false" id="blueprintContext" xmlns="http://camel.apache.org/schema/blueprint">
+    <route id="process-simple-order">
+        <from uri="file://orders/pending/simple?delete=true"/>
+        <log message="Analysing File ${in.header.CamelFileName}" loggingLevel="INFO" logName="Simple-CamelFileName"/>
+        <unmarshal>
+            <jaxb contextPath="com.redhat.samples.fuse.camel.blueprint.model" prettyPrint="true" partClass="com.redhat.samples.fuse.camel.blueprint.model.TradeOrder"/>
+        </unmarshal>
+        <log message="OrderInfo: ${body.name} has brought Stock ${body.stockId} with shares ${body.shares}" loggingLevel="INFO" logName="OrderInfo-New"/>
+        <bean ref="stockBean" method="calculateCost"/>
+        <choice>
+            <when>
+                <simple>${body.vip} &gt;= 3</simple>
+                <log message="OrderInfo: ${body.name} is VIP" loggingLevel="INFO" logName="OrderInfo-VIP"/>
+                <setHeader headerName="CamelFileName">
+                    <simple>${body.stockId}-${date:now:yyyyMMddhhmmss}-procesed.xml</simple>
+                </setHeader>
+                <convertBodyTo type="String"/>
+                <log message="OrderInfo-String:\n${body}" loggingLevel="INFO" logName="OrderInfo-String"/>
+                <to uri="file://orders/done/vip"/>
+            </when>
+            <when>
+                <simple>${body.vip} == 2</simple>
+                <log message="OrderInfo: ${body.name} is Semi-VIP" loggingLevel="INFO" logName="OrderInfo-VIP"/>
+                <setHeader headerName="CamelFileName">
+                    <simple>${body.stockId}-${date:now:yyyyMMddhhmmss}-procesed.xml</simple>
+                </setHeader>
+                <convertBodyTo type="String"/>
+                <log message="OrderInfo-String:\n${body}" loggingLevel="INFO" logName="OrderInfo-String"/>
+                <to uri="activemq:queue:vip"/>
+            </when>
+            <otherwise>
+                <setHeader headerName="CamelFileName">
+                    <simple>${body.stockId}-${date:now:yyyyMMddhhmmss}-procesed.json</simple>
+                </setHeader>
+                <marshal>
+                    <json prettyPrint="true" library="Jackson" unmarshalTypeName="com.redhat.samples.fuse.camel.blueprint.model.TradeOrder"/>
+                </marshal>
+                <log message="OrderInfo-JSON: ${body}" loggingLevel="INFO" logName="OrderInfo-JSON"/>
+                <to uri="file://orders/done/json"/>
+            </otherwise>
+        </choice>
+    </route>
+    <route id="process-multiple-orders">
+        <from uri="file://orders/pending/multiple"/>
+        <log message="Analysing File ${in.header.CamelFileName}" loggingLevel="INFO" logName="Multiple-CamelFileName"/>
+        <split>
+            <tokenize token="stocktrading" xml="true"></tokenize>
+            <log message="Multiple Orders:\n${body}"/>
+            <unmarshal>
+                <jaxb contextPath="com.redhat.samples.fuse.camel.blueprint.model" prettyPrint="true" partClass="com.redhat.samples.fuse.camel.blueprint.model.TradeOrder"/>
+            </unmarshal>
+            <setHeader headerName="CamelFileName">
+                <simple>${body.stockId}-${date:now:yyyyMMddhhmmss}-simple-order.xml</simple>
+            </setHeader>
+            <to uri="file://orders/pending/simple"/>
+        </split>
+    </route>
+    <route id="process-vip-queue-order">
+        <from uri="activemq:queue:vip"/>
+        <log message="Analysing Message in Queue VIP" loggingLevel="INFO" logName="Simple-CamelFileName"/>
+        <unmarshal>
+            <jaxb contextPath="com.redhat.samples.fuse.camel.blueprint.model" prettyPrint="true" partClass="com.redhat.samples.fuse.camel.blueprint.model.TradeOrder"/>
+        </unmarshal>
+        <log message="OrderInfo: ${body.name} has brought Stock ${body.stockId} with shares ${body.shares}" loggingLevel="INFO" logName="OrderInfo-New"/>
+        <setHeader headerName="CamelFileName">
+            <simple>${body.stockId}-${date:now:yyyyMMddhhmmss}-queue-procesed.xml</simple>
+        </setHeader>
+        <convertBodyTo type="String"/>
+        <log message="OrderInfo-String:\n${body}" loggingLevel="INFO" logName="OrderInfo-String"/>
+        <to uri="file://orders/done/vip"/>
+    </route>
+</camelContext>
+
+</blueprint>

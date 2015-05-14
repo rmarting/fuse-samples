@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project activeEnvironment="Default" name="camel-cxf-blueprint" resourceRoot="" soapui-version="5.0.0" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="HelloWorldImplServiceSoapBinding" type="wsdl" bindingName="{http://ws.cxf.fuse.samples.redhat.com/}HelloWorldImplServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8181/cxf/webservices/HelloWorld?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8181/cxf/webservices/HelloWorld?wsdl"><con:part><con:url>http://localhost:8181/cxf/webservices/HelloWorld?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="HelloWorldImplService" targetNamespace="http://ws.cxf.fuse.samples.redhat.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.cxf.fuse.samples.redhat.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://ws.cxf.fuse.samples.redhat.com/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="sayHi" type="tns:sayHi"/>
+      <xs:element name="sayHiResponse" type="tns:sayHiResponse"/>
+      <xs:complexType name="sayHi">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="sayHiResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="sayHi">
+    <wsdl:part element="tns:sayHi" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="sayHiResponse">
+    <wsdl:part element="tns:sayHiResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="HelloWorld">
+    <wsdl:operation name="sayHi">
+      <wsdl:input message="tns:sayHi" name="sayHi"></wsdl:input>
+      <wsdl:output message="tns:sayHiResponse" name="sayHiResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="HelloWorldImplServiceSoapBinding" type="tns:HelloWorld">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="sayHi">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="sayHi">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="sayHiResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="HelloWorldImplService">
+    <wsdl:port binding="tns:HelloWorldImplServiceSoapBinding" name="HelloWorldImplPort">
+      <soap:address location="http://localhost:8181/cxf/webservices/HelloWorld"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8181/cxf/webservices/HelloWorld</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="sayHi" bindingOperationName="sayHi" type="Request-Response" outputName="sayHiResponse" inputName="sayHi" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8181/cxf/webservices/HelloWorld</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.cxf.fuse.samples.redhat.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:sayHi>
+         <arg0>Roman</arg0>
+      </ws:sayHi>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.cxf.fuse.samples.redhat.com/HelloWorld/sayHi"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="ByeWorldImplServiceSoapBinding" type="wsdl" bindingName="{http://ws.cxf.fuse.samples.redhat.com/}ByeWorldImplServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8181/cxf/webservices/ByeWorld?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8181/cxf/webservices/ByeWorld?wsdl"><con:part><con:url>http://localhost:8181/cxf/webservices/ByeWorld?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="ByeWorldImplService" targetNamespace="http://ws.cxf.fuse.samples.redhat.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.cxf.fuse.samples.redhat.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://ws.cxf.fuse.samples.redhat.com/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="sayBye" type="tns:sayBye"/>
+      <xs:element name="sayByeResponse" type="tns:sayByeResponse"/>
+      <xs:complexType name="sayBye">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="sayByeResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="sayByeResponse">
+    <wsdl:part element="tns:sayByeResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="sayBye">
+    <wsdl:part element="tns:sayBye" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ByeWorld">
+    <wsdl:operation name="sayBye">
+      <wsdl:input message="tns:sayBye" name="sayBye"></wsdl:input>
+      <wsdl:output message="tns:sayByeResponse" name="sayByeResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ByeWorldImplServiceSoapBinding" type="tns:ByeWorld">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="sayBye">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="sayBye">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="sayByeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ByeWorldImplService">
+    <wsdl:port binding="tns:ByeWorldImplServiceSoapBinding" name="ByeWorldImplPort">
+      <soap:address location="http://localhost:8181/cxf/webservices/ByeWorld"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8181/cxf/webservices/ByeWorld</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="sayBye" bindingOperationName="sayBye" type="Request-Response" outputName="sayByeResponse" inputName="sayBye" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8181/cxf/webservices/ByeWorld</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.cxf.fuse.samples.redhat.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ws:sayBye>
+         <arg0>Roman</arg0>
+      </ws:sayBye>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ws.cxf.fuse.samples.redhat.com/ByeWorld/sayBye"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:RestService" wadlVersion="http://wadl.dev.java.net/2009/02" name="camel-cxf-blueprint" type="rest" basePath="/cxf/rs" definitionUrl="http://localhost:8181/cxf/rs?_wadl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8181/cxf/rs?_wadl"><con:part><con:url>http://localhost:8181/cxf/rs?_wadl</con:url><con:content><![CDATA[<application xmlns="http://wadl.dev.java.net/2009/02" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <grammars/>
+  <resources base="http://localhost:8181/cxf/rs">
+    <resource path="/HelloWorld">
+      <resource path="/{name}">
+        <param name="name" style="template" type="xs:string"/>
+        <method name="GET">
+          <request/>
+          <response>
+            <representation mediaType="text/html">
+              <param name="result" style="plain" type="xs:string"/>
+            </representation>
+          </response>
+        </method>
+      </resource>
+    </resource>
+    <resource path="/ByeWorld">
+      <resource path="/{name}">
+        <param name="name" style="template" type="xs:string"/>
+        <method name="GET">
+          <request/>
+          <response>
+            <representation mediaType="text/html">
+              <param name="result" style="plain" type="xs:string"/>
+            </representation>
+          </response>
+        </method>
+      </resource>
+    </resource>
+  </resources>
+</application>]]></con:content><con:type>http://wadl.dev.java.net/2009/02</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8181</con:endpoint></con:endpoints><con:resource name="/HelloWorld" path="/HelloWorld"><con:settings/><con:parameters/><con:resource name="/{name}" path="/{name}"><con:settings/><con:parameters><con:parameter><con:name>name</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>text/html</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:8181</con:endpoint><con:request/><con:originalUri>http://localhost/cxf/rs/HelloWorld/Roman</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="name" value="Roman" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:request></con:method></con:resource></con:resource><con:resource name="/ByeWorld" path="/ByeWorld"><con:settings/><con:parameters/><con:resource name="/{name}" path="/{name}"><con:settings/><con:parameters><con:parameter><con:name>name</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>text/html</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:8181</con:endpoint><con:request/><con:originalUri>http://localhost/cxf/rs/ByeWorld/Roman</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="name" value="Roman" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:request></con:method></con:resource></con:resource></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/></con:soapui-project>

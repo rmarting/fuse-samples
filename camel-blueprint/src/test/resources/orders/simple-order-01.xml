@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stocktrading>
+    <name>Christina Lin</name>
+    <customerId>A123456789</customerId>
+    <vip>1</vip>
+    <stockId>XYZ</stockId>
+    <shares>11</shares>        
+</stocktrading>

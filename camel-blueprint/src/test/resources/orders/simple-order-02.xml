@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stocktrading>
+    <name>Frank Jarrod</name>
+    <customerId>F475678678</customerId>
+    <vip>4</vip>
+    <stockId>ABC</stockId>
+    <shares>20</shares>        
+</stocktrading>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<multiple>
+    <stocktrading>
+        <name>Sarah Fox</name>
+        <customerId>C3456767878</customerId>
+        <vip>5</vip>
+        <stockId>SOU</stockId>
+        <shares>10</shares>        
+    </stocktrading>
+    <stocktrading>
+        <name>John Osborn</name>
+        <customerId>K34567854</customerId>
+        <vip>1</vip>
+        <stockId>KUJ</stockId>
+        <shares>25</shares>        
+    </stocktrading>
+</multiple>
