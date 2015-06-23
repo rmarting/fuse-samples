@@ -4,13 +4,13 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.redhat.samples.fuse</groupId>
+	<groupId>com.redhat.fuse.samples</groupId>
 	<artifactId>camel-blueprint</artifactId>
 	<packaging>bundle</packaging>
 	<version>1.0.0-SNAPSHOT</version>
 
-	<name>A Camel Blueprint Route</name>
-	<url>http://www.myorganization.org</url>
+	<name>AMQ Route Sample with Camel Spring</name>
+	<url>http://www.redhat.com</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,7 +22,7 @@
 		<org.slf4j.version>1.7.5</org.slf4j.version>
 		
 		<!-- Fabric8 Properties (Lab06) -->
-		<fabric8.profile>lab-workshop</fabric8.profile>
+<!-- 		<fabric8.profile>lab-workshop</fabric8.profile> -->
 		<fabric8.parentProfiles>feature-camel mq-amq</fabric8.parentProfiles>
 		<fabric8.features>camel-jaxb camel-jackson activemq-camel</fabric8.features>		
 	</properties>
@@ -227,7 +227,7 @@
 				<artifactId>fabric8-maven-plugin</artifactId>
 				<version>1.0.0.redhat-412</version>
 				<configuration>
-					<jolokiaUrl>http://localhost:8181/jolokia</jolokiaUrl>
+<!-- 					<jolokiaUrl>http://localhost:8181/jolokia</jolokiaUrl> -->
 				</configuration>
 			</plugin>
 		</plugins>

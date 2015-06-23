@@ -13,9 +13,10 @@
 	<bean id="stockBean" class="com.redhat.samples.fuse.camel.blueprint.beans.StockBean" />
 	<!-- AMQ Bean -->
 	<bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
-      <property name="brokerURL" value="vm://localhost?broker.persistent=false"/>
-      <property name="userName" value=""/>
-      <property name="password" value=""/>
+		<!--       <property name="brokerURL" value="vm://localhost?broker.persistent=false"/> -->
+		<property name="brokerURL" value="tcp://localhost:61616" />
+		<property name="userName" value="admin"/>
+		<property name="password" value="admin"/>	
 	</bean>
 	
 	<!-- Camel CXF -->
@@ -30,7 +31,7 @@
 		class="com.redhat.samples.fuse.camel.blueprint.rs.router.CamelBluePrintRouteBuilder"/-->
 
 	<!-- Camel Context -->
-	<camelContext trace="false" id="blueprintContext" xmlns="http://camel.apache.org/schema/blueprint">
+	<camelContext trace="false" id="camel-blueprint-context" xmlns="http://camel.apache.org/schema/blueprint">
     <route id="process-simple-order">
         <from uri="file://orders/pending/simple?delete=true"/>
         <log message="Analysing File ${in.header.CamelFileName}" loggingLevel="INFO" logName="Simple-CamelFileName"/>

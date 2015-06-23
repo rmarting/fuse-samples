@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:camel="http://camel.apache.org/schema/spring" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<bean class="org.apache.activemq.camel.component.ActiveMQComponent" id="activemq">
+		<!-- discovery:(fabric://amq-broker) -->
+		<!-- tcp://localhost:50000 -->
+		<!-- tcp://localhost:61616 -->
+		<property name="brokerURL" value="tcp://localhost:61616" />
+  		<property name="userName" value="admin"/>
+  		<property name="password" value="admin"/>
+	</bean>
+	
+	<!-- Processors -->	
+	<bean id="generatorBean" class="com.redhat.fuse.camel.bean.IdGeneratorBean"/>
+
+	<camelContext xmlns="http://camel.apache.org/schema/spring" id="producer" trace="false">
+		<route id="send-message">
+        	<from uri="timer://demo?period=1000"/>
+        	<log loggingLevel="INFO" logName="p1" message="[SPRING] Setting Message Body"/>        	
+        	<setBody>
+            	<method ref="generatorBean" method="generateNewID"></method>
+        	</setBody>
+        	<log logName="p2" message="[SPRING] Printing body => ${body}"/>
+        	<to uri="activemq:queue:sampleQueue"/>
+		</route>
+	</camelContext>
+</beans>

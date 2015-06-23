@@ -4,7 +4,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.redhat.samples.fuse.cics</groupId>
+	<groupId>com.redhat.fuse.samples.cics</groupId>
 	<artifactId>camel-cics-blueprint</artifactId>
 	<packaging>bundle</packaging>
 	<version>1.0.1</version>

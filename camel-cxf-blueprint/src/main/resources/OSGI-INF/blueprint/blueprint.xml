@@ -2,10 +2,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws"
 	xmlns:cxf="http://cxf.apache.org/blueprint/core"
 	xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
+	xmlns:camel="http://camel.apache.org/schema/blueprint"
 	xsi:schemaLocation="
       http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd
       http://cxf.apache.org/blueprint/jaxws http://cxf.apache.org/schemas/blueprint/jaxws.xsd
-      http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd">
+      http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
+      http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
     
     <!-- CXF Bus -->  
 	<cxf:bus>
@@ -39,5 +41,24 @@
 	<!-- JAX-RS Services -->
 	<bean id="helloWorldRS" class="com.redhat.samples.fuse.cxf.rs.HelloWorld"/>
 	<bean id="byeWorldRS" class="com.redhat.samples.fuse.cxf.rs.ByeWorld"/>
+	
+	<!-- Consuming Camel CXF Services -->
+	<!-- 
+	<cxf:cxfEndpoint id="HelloWebSevice"
+        address="http://localhost:8181/cxf/webservices/HelloWorld" wsdlURL="http://localhost:8181/cxf/webservices/HelloWorld?wsdl"
+        serviceClass="demows.HelloWorldImpl" />
+ 
+    <camelContext trace="true" id="camel-cxf-blueprint-services" xmlns="http://camel.apache.org/schema/blueprint">
+        <route id="wsClient">
+            <from uri="timer:foo?repeatCount=10" />
+            <setBody>
+                <arg0>Roman</arg0>
+            </setBody>
+            <log message="${body}" />
+            <to uri="cxf:bean:HelloWebSevice?defaultOperationName=sayHi" />
+            <to uri="mock:result" />
+        </route>
+    </camelContext>
+    -->	
       
 </blueprint>

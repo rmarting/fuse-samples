@@ -12,7 +12,10 @@ To run the project you can execute the following Maven goal
 To deploy the project in OSGi. For example using Apache ServiceMix
 or Apache Karaf. You can run the following command from its shell:
 
-    osgi:install -s mvn:com.redhat.samples.fuse/camel-blueprint/1.0.0-SNAPSHOT
+	it is needed to install previous features
+
+	features:install camel-jackson
+    osgi:install -s mvn:com.redhat.fuse.samples/camel-blueprint/1.0.0-SNAPSHOT
     
 You can update with the following command:
 

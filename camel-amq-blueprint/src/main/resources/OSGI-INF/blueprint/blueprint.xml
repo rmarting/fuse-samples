@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/blueprint"
+	xsi:schemaLocation="
+       http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+	<bean id="helloBean" class="com.redhat.fuse.samples.amq.HelloBean">
+		<property name="say" value="Hi from Camel" />
+	</bean>
+	<bean id="generatorBean" class="com.redhat.fuse.samples.amq.bean.IdGeneratorBean" />
+	
+	<bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<!-- discovery:(fabric://amqdemo) -->
+		<!-- tcp://localhost:60000 -->
+		<!-- tcp://localhost:61616 -->
+		<property name="brokerURL" value="tcp://localhost:61616" />
+		<property name="userName" value="admin" />
+		<property name="password" value="admin" />
+	</bean>
+
+	<bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory">
+		<property name="maxConnections" value="1" />
+		<property name="maximumActiveSessionPerConnection" value="500" />
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+	</bean>
+
+	<bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+		<property name="connectionFactory" ref="pooledConnectionFactory" />
+	</bean>
+
+	<camelContext id="camel-amq-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
+		<route id="timer-to-log-mock">
+			<from uri="timer:foo?period=300000" />
+			<setBody>
+				<method ref="helloBean" method="hello" />
+			</setBody>
+			<log message="[BP] The message contains ${body}" />
+			<to uri="mock:result" />
+		</route>
+		<route id="timer-to-send-message">
+			<from uri="timer://demo?period=60000" />
+			<log loggingLevel="INFO" logName="p1" message="[BP] Generating new ID" />
+        	<setBody>
+            	<method ref="generatorBean" method="generateNewID"/>
+        	</setBody>
+			<log logName="p2" message="[BP] New Message Body '${body}' to send" />
+			<to uri="activemq:queue:sampleQueue" />
+		</route>
+		<route id="log-message">
+			<from uri="activemq:queue:sampleQueue" />
+			<log message="[BP] Message Body '${body}' from sampleQueue consumed" />
+		</route>
+	</camelContext>
+
+</blueprint>

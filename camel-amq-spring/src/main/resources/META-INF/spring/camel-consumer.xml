@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:camel="http://camel.apache.org/schema/spring" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:cxf="http://camel.apache.org/schema/blueprint/cxf"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       	http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       	http://camel.apache.org/schema/blueprint/cxf http://camel.apache.org/schema/blueprint/cxf/camel-cxf.xsd">
+
+	<bean class="org.apache.activemq.camel.component.ActiveMQComponent" id="activemq">
+		<!-- discovery:(fabric://amq-broker) -->
+		<!-- tcp://localhost:50000 -->
+		<!-- tcp://localhost:61616 -->
+		<property name="brokerURL" value="tcp://localhost:61616" />
+		<property name="userName" value="admin" />
+		<property name="password" value="admin" />
+	</bean>
+
+	<!-- External Web Service -->
+	<!-- 
+	<cxf:cxfEndpoint id="epValidationWS" 
+		address="http://localhost:8181/cxf/report" wsdlURL="http://localhost:8181/cxf/report/?wsdl"
+		serviceClass="com.allianz.esb.simpleservice.incident.IncidentServicePortType">
+			<cxf:outInterceptors>
+				<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor" />
+			</cxf:outInterceptors>
+			<cxf:inInterceptors>
+				<bean class="org.apache.cxf.interceptor.LoggingInInterceptor" />
+			</cxf:inInterceptors>
+	</cxf:cxfEndpoint>
+	-->
+	
+	<camelContext xmlns="http://camel.apache.org/schema/spring" id="consumer" trace="false">
+		<route id="log-message">
+			<from uri="activemq:queue:sampleQueue"/>
+        	<log message="[SPRING] Message from sampleQueue => ${body}"/>
+		</route>
+	</camelContext>
+
+</beans>

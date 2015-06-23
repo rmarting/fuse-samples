@@ -12,11 +12,11 @@ To run the project you can execute the following Maven goal
 To deploy the project in OSGi. For example using Apache ServiceMix
 or Apache Karaf. You can run the following command from its shell:
 
-    osgi:install -s mvn:com.redhat.samples.fuse.cxf/camel-cxf-blueprint/1.0.0-SNAPSHOT
+    osgi:install -s mvn:com.redhat.fuse.samples/camel-cxf-blueprint/1.0.0-SNAPSHOT
 
 You can update with the following command:   
     
-    osgi:update <id> mvn:com.redhat.samples.fuse.cxf/camel-cxf-blueprint/1.0.0-SNAPSHOT
+    osgi:update <id> mvn:com.redhat.fuse.samples/camel-cxf-blueprint/1.0.0-SNAPSHOT
 
 In src/test/resources/sopaui there are some SoapUI projects to test the Camel CXF Services. 
 You only need to load in SoapUI these files.
