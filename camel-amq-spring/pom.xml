@@ -12,6 +12,19 @@
 	<name>A-MQ Route Sample with Camel Spring</name>
 	<url>http://www.redhat.com</url>
 
+	<distributionManagement>
+		<repository>
+			<id>nexus</id>
+			<name>Local Internal Releases</name>
+			<url>http://localhost:8081/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus</id>
+			<name>Local Internal Snapshots</name>
+			<url>http://localhost:8081/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -107,6 +120,23 @@
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-spring</artifactId>
 			<version>2.12.0.redhat-610379</version>
+		</dependency>
+		
+		<dependency>
+      		<groupId>org.apache.camel</groupId>
+      		<artifactId>camel-http4</artifactId>
+      		<version>2.12.0.redhat-610379</version>
+    	</dependency>
+
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jaxb</artifactId>
+      		<version>2.12.0.redhat-610379</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jackson</artifactId>
+      		<version>2.12.0.redhat-610379</version>
 		</dependency>
 
 		<!-- the ActiveMQ client with connection pooling -->

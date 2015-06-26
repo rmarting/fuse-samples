@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:camel="http://camel.apache.org/schema/spring" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<!-- Processors -->
+	<bean id="generatorBean" class="com.redhat.fuse.camel.bean.IdGeneratorBean" />
+
+	<camelContext trace="false" id="http-context" xmlns="http://camel.apache.org/schema/spring">
+		<route id="call-http">
+			<from uri="timer://demo-http?period=10000" />
+			<log message="[SPRING] Calling HTTP" />
+			<to uri="http4://www.thomas-bayer.com/sqlrest/CUSTOMER/2/" />
+			<unmarshal>
+				<jaxb contextPath="com.redhat.fuse.camel.model" prettyPrint="true"
+					partClass="com.redhat.fuse.camel.model.Customer" />
+			</unmarshal>
+			<log message="[SPRING] HTTP Response:\n ${body}" />
+			<choice>
+				<when>
+					<simple>${body.cITY} == 'Lyon'</simple>
+					<log message="Customer ${body.fIRSTNAME} is from France"
+						loggingLevel="INFO" logName="FRANCE" />
+				</when>
+				<otherwise>
+					<log message="Customer ${body.fIRSTNAME} is not from France"
+						loggingLevel="INFO" logName="NOT-FRANCE" />
+				</otherwise>
+			</choice>
+		</route>
+	</camelContext>
+</beans>
