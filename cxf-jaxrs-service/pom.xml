@@ -7,6 +7,20 @@
     <packaging>war</packaging>
     <name>Simple CXF JAX-RS webapp service using spring configuration</name>
     <description>Simple CXF JAX-RS webapp service using spring configuration</description>
+
+	<distributionManagement>
+		<repository>
+			<id>nexus</id>
+			<name>Local Internal Releases</name>
+			<url>http://localhost:8081/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus</id>
+			<name>Local Internal Snapshots</name>
+			<url>http://localhost:8081/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>	
+
     <properties>
         <jackson.version>1.8.6</jackson.version>
     </properties>

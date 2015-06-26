@@ -25,13 +25,20 @@ From a Fuse Console you can create a container and add this profile in it:
  
     # Create container
 	fabric:container-create-child --zookeeper-password admin root camel-amq-ct
+	# Fuse 6.2
+	fabric:container-create-child --zookeeper-password admin --bind-address 127.0.0.1 --zookeeper-password admin --resolver manualip root camel-amq-ct
 	
 	# Add Profile to container
 	fabric:container-add-profile camel-amq-ct com.redhat.fuse.samples-camel-amq-blueprint
 
 	# Remove Profile from container
 	fabric:container-remove-profile camel-amq-app com.redhat.fuse.samples-camel-amq-blueprint
+	
+	fabric:profile-import mvn:com.redhat.fuse.samples/camel-amq-blueprint/1.0.0-SNAPSHOT/zip/profile
 
+
+	fabric:container-create-child --zookeeper-password admin --bind-address 127.0.0.1 --zookeeper-password admin --resolver manualip --profile mq-broker-amq.amq-broker  root amq-ct 2
+	
 Links
 =====
 

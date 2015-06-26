@@ -1,22 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/blueprint"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:camel="http://camel.apache.org/schema/blueprint"
+	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
 	xsi:schemaLocation="
        http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
        http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+	
+    <!-- OSGI blueprint property placeholder (File created: etc/camel-amq-blueprint.properties )-->
+    <cm:property-placeholder id="etcProperties" persistent-id="com.redhat.fuse.samples.camelamqblueprint">
+		<cm:default-properties>
+            <cm:property name="amq.brokerURL" value="vm://localhost"/>
+            <cm:property name="amq.userName" value="admin"/>
+            <cm:property name="amq.password" value="admin"/>
+            <cm:property name="prop2" value="false"/>
+        </cm:default-properties>    
+    </cm:property-placeholder>
 
 	<bean id="helloBean" class="com.redhat.fuse.samples.amq.HelloBean">
 		<property name="say" value="Hi from Camel" />
 	</bean>
 	<bean id="generatorBean" class="com.redhat.fuse.samples.amq.bean.IdGeneratorBean" />
+	<bean id="sampleProcessor" class="com.redhat.fuse.samples.amq.processor.SampleProcessor"/>
 	
 	<bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-		<!-- discovery:(fabric://amqdemo) -->
+		<!-- discovery:(fabric://amq) -->
 		<!-- tcp://localhost:60000 -->
 		<!-- tcp://localhost:61616 -->
-		<property name="brokerURL" value="tcp://localhost:61616" />
-		<property name="userName" value="admin" />
-		<property name="password" value="admin" />
+		<!-- vm://localhost -->
+		<property name="brokerURL" value="${amq.brokerURL}" />
+		<property name="userName" value="${amq.userName}" />
+		<property name="password" value="${amq.password}" />
 	</bean>
 
 	<bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory">
@@ -29,28 +43,44 @@
 		<property name="connectionFactory" ref="pooledConnectionFactory" />
 	</bean>
 
-	<camelContext id="camel-amq-context" trace="false" xmlns="http://camel.apache.org/schema/blueprint">
-		<route id="timer-to-log-mock">
-			<from uri="timer:foo?period=300000" />
-			<setBody>
-				<method ref="helloBean" method="hello" />
-			</setBody>
-			<log message="[BP] The message contains ${body}" />
-			<to uri="mock:result" />
-		</route>
-		<route id="timer-to-send-message">
-			<from uri="timer://demo?period=60000" />
-			<log loggingLevel="INFO" logName="p1" message="[BP] Generating new ID" />
-        	<setBody>
-            	<method ref="generatorBean" method="generateNewID"/>
-        	</setBody>
-			<log logName="p2" message="[BP] New Message Body '${body}' to send" />
-			<to uri="activemq:queue:sampleQueue" />
-		</route>
-		<route id="log-message">
-			<from uri="activemq:queue:sampleQueue" />
-			<log message="[BP] Message Body '${body}' from sampleQueue consumed" />
-		</route>
-	</camelContext>
+	<camelContext trace="false" id="camel-amq-context" xmlns="http://camel.apache.org/schema/blueprint">
+		<camel:propertyPlaceholder location="blueprint:etcProperties,classpath:config.properties"/>
+  <route id="timer-to-log-mock">
+    <from uri="timer:foo?period=300000"/>
+    <setBody>
+      <method ref="helloBean" method="hello"></method>
+    </setBody>
+    <log message="[BP] The message contains ${body}"/>
+    <to uri="mock:result"/>
+  </route>
+  <route id="timer-to-send-message">
+    <from uri="timer://demo?period=10000"/>
+    <log message="[BP] The property prop1 has '${properties:prop1}' as value"/>
+    <log message="[BP] The property prop2 has '${properties:prop2}' as value"/>
+    <log message="[BP] Generating new ID" loggingLevel="INFO" logName="p1"/>
+    <setBody>
+      <method ref="generatorBean" method="generateNewID"></method>
+    </setBody>
+    <log message="[BP] New Message Body '${body}' to send" logName="p2"/>
+    <process ref="sampleProcessor"/>
+    <to uri="activemq:queue:sampleQueue"/>
+  </route>
+  <route id="log-message">
+    <from uri="activemq:queue:sampleQueue"/>
+    <log message="[BP] Message Body '${body}' from sampleQueue consumed"/>
+  </route>
+  <route id="test-choice">
+    <from uri="timer:timerName?period=20000"/>
+    <choice>
+      <when id="when-1">
+        <simple>${properties:prop1} == 'true'</simple>
+        <log message="It is true"/>
+      </when>
+      <otherwise>
+        <log message="It is false"/>
+      </otherwise>
+    </choice>
+  </route>
+</camelContext>
 
 </blueprint>

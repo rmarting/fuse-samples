@@ -12,6 +12,19 @@
 	<name>AMQ Route Sample with Camel Spring</name>
 	<url>http://www.redhat.com</url>
 
+	<distributionManagement>
+		<repository>
+			<id>nexus</id>
+			<name>Local Internal Releases</name>
+			<url>http://localhost:8081/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus</id>
+			<name>Local Internal Snapshots</name>
+			<url>http://localhost:8081/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

@@ -1,218 +1,177 @@
-<!--
-  JBoss, Home of Professional Open Source
-  Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
-  contributors by the @authors tag. See the copyright.txt in the
-  distribution for a full listing of individual contributors.
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-  http://www.apache.org/licenses/LICENSE-2.0
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-  -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-	<!--
-    <parent>
-      <groupId>org.jboss.quickstarts.fuse</groupId>
-      <artifactId>jboss-quickstarts-fuse-parent</artifactId>
-      <version>6.1.0.redhat-SNAPSHOT</version>
-    </parent>
-	-->
-	
-    <modelVersion>4.0.0</modelVersion>
-
-    <groupId>com.redhat.fuse.samples</groupId>
-    <artifactId>jms</artifactId>
-    <version>6.1.0.redhat-SNAPSHOT</version>
-    <packaging>bundle</packaging>
-    <name>JBoss Fuse :: Examples :: JMS</name>
-    <description>JMS Example</description>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <version.compiler.plugin>2.3.1</version.compiler.plugin>
-        <version.maven-bundle-plugin>2.3.4</version.maven-bundle-plugin>
-
-        <!-- maven-compiler-plugin -->
-        <maven.compiler.target>1.6</maven.compiler.target>
-        <maven.compiler.source>1.6</maven.compiler.source>
-
-        <!-- the version of the JBoss Fuse BOM, defining all the dependency versions -->
-        <jboss.fuse.bom.version>1.0.0-SNAPSHOT</jboss.fuse.bom.version>
-        <camel-version-range>[2.12,3)</camel-version-range>
-    </properties>
-
-    <dependencyManagement>
-    	<!-- 
-        <dependencies>
-            <dependency>
-                <groupId>org.jboss.fuse.bom</groupId>
-                <artifactId>jboss-fuse-parent</artifactId>
-                <version>${jboss.fuse.bom.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-        -->
-    </dependencyManagement>
-
-    <dependencies>
-        <!--
-          For this quickstart, we will be using the OSGi Blueprint XML syntax for Apache Camel.
-          The camel-blueprint bundle is installed in JBoss Fuse by default,
-          so we are setting the dependency's scope to 'provided'.
-        -->
-        <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-blueprint</artifactId>
-            <version>2.12.0.redhat-610379</version>
-        </dependency>
-
-        <!-- ActiveMQ connectivity for Camel -->
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-osgi</artifactId>
-            <version>5.9.0</version>
-            <exclusions>
-            	<exclusion>
-            		<artifactId>jmxtools</artifactId>
-            		<groupId>com.sun.jdmk</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>jmxri</artifactId>
-            		<groupId>com.sun.jmx</groupId>
-            	</exclusion>
-            </exclusions>
-        </dependency>
-
-    </dependencies>
-
-    <repositories>
-        <repository>
-            <id>fusesource.m2</id>
-            <name>FuseSource Community Release Repository</name>
-            <url>https://repo.fusesource.com/nexus/content/groups/public</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-        <repository>
-            <id>fusesource.ea</id>
-            <name>FuseSource Community Early Access Release Repository</name>
-            <url>https://repo.fusesource.com/nexus/content/groups/ea</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>fusesource.m2</id>
-            <name>FuseSource Community Release Repository</name>
-            <url>https://repo.fusesource.com/nexus/content/groups/public</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </pluginRepository>
-        <pluginRepository>
-            <id>fusesource.ea</id>
-            <name>FuseSource Community Early Access Release Repository</name>
-            <url>https://repo.fusesource.com/nexus/content/groups/ea</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </pluginRepository>
-    </pluginRepositories>
-
-    <build>
-        <finalName>${project.artifactId}</finalName>
-        <resources>
-          <resource>
-            <directory>src/main/resources</directory>
-            <filtering>true</filtering>
-          </resource>
-        </resources>
-        <plugins>
-
-            <!-- Compiler plugin enforces Java 1.6 compatibility and activates annotation processors -->
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${version.compiler.plugin}</version>
-                <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <version>${version.maven-bundle-plugin}</version>
-                <extensions>true</extensions>
-            </plugin>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-resources-plugin</artifactId>
-              <version>2.6</version>
-              <executions>
-                <execution>
-                  <id>filter</id>
-                  <phase>generate-resources</phase>
-                  <goals>
-                    <goal>resources</goal>
-                  </goals>
-                </execution>
-              </executions>
-            </plugin>
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>build-helper-maven-plugin</artifactId>
-              <version>1.9.1</version>
-              <executions>
-                <execution>
-                  <id>attach-artifacts</id>
-                  <phase>package</phase>
-                  <goals>
-                    <goal>attach-artifact</goal>
-                  </goals>
-                  <configuration>
-                    <artifacts>
-                      <artifact>
-                        <file>target/classes/features.xml</file>
-                        <type>xml</type>
-                        <classifier>features</classifier>
-                      </artifact>
-                    </artifacts>
-                  </configuration>
-                </execution>
-              </executions>
-            </plugin>
-            
-            <plugin>
-				<groupId>io.fabric8</groupId>
-				<artifactId>fabric8-maven-plugin</artifactId>
-				<version>1.2.0.redhat-131</version>
-			</plugin>
-        </plugins>
-    </build>
-
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.redhat.fuse.samples</groupId>
+  <artifactId>jms</artifactId>
+  <version>6.1.0.redhat-SNAPSHOT</version>
+  <packaging>bundle</packaging>
+  <name>JBoss Fuse :: Examples :: JMS</name>
+  <description>JMS Example</description>
+  <properties>
+    <version.maven-bundle-plugin>2.3.4</version.maven-bundle-plugin>
+    <camel-version-range>[2.12,3)</camel-version-range>
+    <version.compiler.plugin>2.3.1</version.compiler.plugin>
+    <jboss.fuse.bom.version>1.0.0-SNAPSHOT</jboss.fuse.bom.version>
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.target>1.6</maven.compiler.target>
+  </properties>
+  <dependencyManagement />
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-blueprint</artifactId>
+      <version>2.12.0.redhat-610379</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-osgi</artifactId>
+      <version>5.9.0</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>jmxtools</artifactId>
+          <groupId>com.sun.jdmk</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jmxri</artifactId>
+          <groupId>com.sun.jmx</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-netty-http</artifactId>
+      <version>2.15.1.redhat-620133</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-http</artifactId>
+      <version>2.15.1.redhat-620133</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-servlet</artifactId>
+      <version>2.15.1.redhat-620133</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-cxf</artifactId>
+      <version>2.15.1.redhat-620133</version>
+    </dependency>
+  </dependencies>
+  <repositories>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>fusesource.m2</id>
+      <name>FuseSource Community Release Repository</name>
+      <url>https://repo.fusesource.com/nexus/content/groups/public</url>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>fusesource.ea</id>
+      <name>FuseSource Community Early Access Release Repository</name>
+      <url>https://repo.fusesource.com/nexus/content/groups/ea</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>fusesource.m2</id>
+      <name>FuseSource Community Release Repository</name>
+      <url>https://repo.fusesource.com/nexus/content/groups/public</url>
+    </pluginRepository>
+    <pluginRepository>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>fusesource.ea</id>
+      <name>FuseSource Community Early Access Release Repository</name>
+      <url>https://repo.fusesource.com/nexus/content/groups/ea</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <build>
+    <resources>
+      <resource>
+        <filtering>true</filtering>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${version.compiler.plugin}</version>
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>${version.maven-bundle-plugin}</version>
+        <extensions>true</extensions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.6</version>
+        <executions>
+          <execution>
+            <id>filter</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>resources</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.9.1</version>
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>target/classes/features.xml</file>
+                  <type>xml</type>
+                  <classifier>features</classifier>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-maven-plugin</artifactId>
+        <version>1.2.0.redhat-131</version>
+      </plugin>
+    </plugins>
+  </build>
 </project>

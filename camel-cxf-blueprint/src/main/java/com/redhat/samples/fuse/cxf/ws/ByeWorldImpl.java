@@ -7,7 +7,7 @@ public class ByeWorldImpl implements ByeWorld {
 
 	@Override
 	public String sayBye(String name) {
-		return "Hi " + name;
+		return "Goodbye " + name;
 	}
 
 }
