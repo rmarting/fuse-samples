@@ -4,24 +4,27 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.redhat.fuse.samples.cics</groupId>
+	<groupId>com.redhat.fuse.samples</groupId>
 	<artifactId>camel-cics-blueprint</artifactId>
 	<packaging>bundle</packaging>
-	<version>1.0.1</version>
+	<version>1.0.0-SNAPSHOT</version>
 
-	<name>Allianz - CICS Camel Route</name>
-	<url>http://www.myorganization.org</url>
+	<name>Camel :: CICS Transaction Gateway Camel Route Sample</name>
+	<url>http://www.redhat.com</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		
+		<!-- Versions -->
+		<org.apache.camel.version>2.15.2</org.apache.camel.version>
 
-		<!-- Fabric Properties -->
-		<fabric8.profile>allianz-cics</fabric8.profile>
-		<!-- Fabric Optional Properties -->
-		<!-- 
-		<fabric8  .f  eatures>camel camel-cxf</fabric8.featur  es>
-		<fabr  ic8.pa   rentProfiles>feature-camel</fabric8.pa  rentProfiles>
+		<!-- Fabric8 Maven Plug-In -->
+		<io.fabric8.version>1.2.0.redhat-621012</io.fabric8.version>
+
+		<!-- Features -->
+		<!-- 		
+		<fabric8.features>ctg camel-cics</fabric8.features>
 		-->
 	</properties>
 
@@ -101,12 +104,19 @@
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-core</artifactId>
-			<version>2.12.0.redhat-610379</version>
+			<version>${org.apache.camel.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-blueprint</artifactId>
-			<version>2.12.0.redhat-610379</version>
+			<version>${org.apache.camel.version}</version>
+		</dependency>
+
+		<!-- Camel CICS Component -->
+		<dependency> 
+			<groupId>org.apache.camel</groupId> 
+			<artifactId>camel-cics</artifactId> 
+			<version>1.0.0-SNAPSHOT</version> 
 		</dependency>
 
 		<!-- logging -->
@@ -135,13 +145,24 @@
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-test-blueprint</artifactId>
-			<version>2.12.0.redhat-610379</version>
+			<version>${org.apache.camel.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
 	<build>
 		<defaultGoal>install</defaultGoal>
+		
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/fabric8</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>		
 
 		<plugins>
 			<plugin>
@@ -171,8 +192,12 @@
 				<configuration>
 					<instructions>
 						<Bundle-SymbolicName>camel-cics-blueprint</Bundle-SymbolicName>
-						<Private-Package>com.redhat.samples.fuse.cics.camel.cics.blueprint.*</Private-Package>
+						<Private-Package>com.redhat.fuse.samples.*</Private-Package>
 						<Import-Package>*</Import-Package>
+						<!-- 
+						<Export-Package> 
+						</Export-Package>
+						-->
 					</instructions>
 				</configuration>
 			</plugin>
@@ -188,16 +213,22 @@
 			</plugin>
 
 			<!-- fabric8 plugin for using deploying via mvn fabric:deploy -->
+			<!-- 
 			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>fabric8-maven-plugin</artifactId>
-				<!-- 
-				<configuration>
-					<jolokiaUrl>http://localhost:8181/jolokia</jolokiaUrl>
-				</configuration>	
-				-->
+				<version>${io.fabric8.version}</version>
+				<executions>
+					<execution>
+						<id>zip</id>
+						<phase>package</phase>
+						<goals>
+							<goal>zip</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
-
+			-->
 		</plugins>
 	</build>
 

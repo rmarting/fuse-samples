@@ -1,12 +1,11 @@
-CICS Sample Camel Router Project for Blueprint (OSGi)
-=====================================================
+CICS Transaction Gateway Sample Camel Router Project for Blueprint (OSGi)
+=========================================================================
 
-This route uses CICS Camel Component to invoke a COBOL Program in a Mainframe
+This route uses CICS Transaction Gateway Camel Component to invoke a COBOL Program in a Mainframe
 
 The uri to Mainframe is based in the following formats: 
     
-    <to uri="cics://serverName1:port/program1?ServerName=CI0ARDE&amp;TraceLevel=9&amp;sslKeyring=sslKeyring1&amp;sslPassword=sslPassword1&amp;userId=userId1&amp;password=password1&amp;commAreaSize=0&amp;port=100"/>
-    <to uri="cics://arde.intrallianz.es:2006/DC00CO01?ServerName=CI0ARDE&amp;TraceLevel=9"/>
+    <to uri="cics://HOST:PORT/SERVER?TraceLevel=9&amp;sslKeyring=sslKeyring1&amp;sslPassword=sslPassword1&amp;userId=userId1&amp;password=password1&amp"/>
 
 	TODO: Complete with all available attributes    
 
@@ -22,8 +21,16 @@ To run the project you can execute the following Maven goal
 To deploy the project in OSGi. For example using Apache ServiceMix
 or Apache Karaf. You can run the following command from its shell:
 
-    osgi:install -s mvn:com.redhat.samples.fuse.cics/camel-cics-blueprint/<version>
+    osgi:install -s mvn:com.redhat.fuse.samples/camel-cics-blueprint/<version>
 
 For more help see the Apache Camel documentation
 
     http://camel.apache.org/
+
+Fuse Fabric (TODO)
+===========    
+    
+	JBossFuse:karaf@root> fabric:profile-edit --repository file:/my-features-repo.xml com.redhat.fuse.samples-camel-cics-blueprint 
+	Adding feature repository:file:/my-features-repo.xml to profile:com.redhat.fuse.samples-camel-cics-blueprint version:1.0
+    
+	Feature: camel-cics
